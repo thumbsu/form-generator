@@ -1,0 +1,28 @@
+import React from "react"
+import { useForm } from "react-hook-form"
+import { connect } from "react-redux"
+
+export default function Filter(props) {
+  const { register, handleSubmit, setValue } = useForm();
+  const onSubmit = data => props.updateAction(data);
+  
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      {{#each filter as | f |}}
+        {{#if (isTextType f.type)}}
+          <input {...register("{{ f.name }}")} defaultValue="{{f.defaultValue}}" placeholder="{{f.placeholder}}" />
+        {{/if}}
+        {{#if (isSelectType f.type)}}
+          <select {...register("{{ f.name}}")}>
+            {{#each f.option as | options | }}
+              <option key="{{@index}}" value="{{ options }}">
+                {{ options }}
+              </option>
+            {{/each}}
+          </select>
+        {{/if}}
+      {{/each}}
+      <input type="submit" />
+    </form>
+  )
+}

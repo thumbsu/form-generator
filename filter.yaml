@@ -8,5 +8,6 @@ filter:
     defaultValue: 'all'
     placeholder: '전체보기'
     option:
+      - all
       - paid
       - free

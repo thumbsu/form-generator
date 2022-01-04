@@ -34,8 +34,8 @@ program
 program.command('parser')
   .argument('[file name]', 'file name')
   .action((fileName) => {
-    const { filter } = reader.yamlToJson(fileName)
-    reader.generate(filter)
+    const filters = reader.yamlToJson(fileName)
+    reader.generate(filters)
   })
 
 // Some of the hooks or actions are async, so call parseAsync rather than parse.

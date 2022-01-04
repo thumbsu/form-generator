@@ -1,5 +1,6 @@
 const yaml = require('js-yaml');
 const fs = require('fs');
+const Handlebars = require('handlebars');
 
 exports.yamlToJson = function (fileName) {
   try {
@@ -10,37 +11,12 @@ exports.yamlToJson = function (fileName) {
 }
 
 exports.generate = function (filters) {
-  console.log('import React from "react"')
-  console.log('import { useForm } from "react-hook-form"')
-  console.log(`
-export default function Filter(props) {
-  const { register, handleSubmit, setValue } = useForm();
-  const onSubmit = data => props.updateAction(data);
-  return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-`)
-  filters.forEach(filter => {
-    if (filter.type === 'text')
-      console.log(`
-      <input
-        type="${filter.type}"
-        {...register('${filter.name}')}
-        defaultValue={${filter.defaultValue}}
-      />
-      `)
-    else if (filter.type === 'select')
-      console.log(`
-      <select {...register('${filter.name}')}>
-        {options.map(value => (
-          <option key={${filter.name}} value={${filter.name}}>
-            {value}
-          </option>
-        ))}
-      </select>`)
-  })
-  console.log(`
-    </form>
-  )
-}
-  `)
+  Handlebars.registerHelper('isTextType', function (value) {
+    return value === "text";
+  });
+  Handlebars.registerHelper('isSelectType', function (value) {
+    return value === "select";
+  });
+  const template = Handlebars.compile(fs.readFileSync("filter.handlebars", 'utf8'));
+  fs.writeFileSync('filter.js', template({ ...filters }))
 }
