@@ -1,0 +1,12 @@
+filter:
+  - name: id
+    type: text
+    defaultValue: ''
+    placeholder: '결제 id를 입력하세요'
+  - name: status
+    type: select
+    defaultValue: 'all'
+    placeholder: '전체보기'
+    option:
+      - paid
+      - free
